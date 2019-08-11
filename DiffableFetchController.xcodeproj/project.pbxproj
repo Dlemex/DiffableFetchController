@@ -10,6 +10,24 @@
 		1AB811AC22FDE09300D32976 /* DiffableFetchController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB811A222FDE09300D32976 /* DiffableFetchController.framework */; };
 		1AB811B122FDE09300D32976 /* DiffableFetchControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811B022FDE09300D32976 /* DiffableFetchControllerTests.swift */; };
 		1AB811B322FDE09300D32976 /* DiffableFetchController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AB811A522FDE09300D32976 /* DiffableFetchController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1AB811BD22FDE14400D32976 /* DiffableFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */; };
+		1AB811C122FDE18500D32976 /* NSExpressionDescription+ObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */; };
+		1AB811C222FDE18500D32976 /* Array+Uniqued.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */; };
+		1AB811C322FDE18500D32976 /* ContextDidSaveNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */; };
+		1AB811CB22FDE22400D32976 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CA22FDE22400D32976 /* AppDelegate.swift */; };
+		1AB811CE22FDE22400D32976 /* DiffableTestApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CC22FDE22400D32976 /* DiffableTestApp.xcdatamodeld */; };
+		1AB811D022FDE22400D32976 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CF22FDE22400D32976 /* MasterViewController.swift */; };
+		1AB811D222FDE22400D32976 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811D122FDE22400D32976 /* DetailViewController.swift */; };
+		1AB811D522FDE22400D32976 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB811D322FDE22400D32976 /* Main.storyboard */; };
+		1AB811D722FDE22600D32976 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AB811D622FDE22600D32976 /* Assets.xcassets */; };
+		1AB811DA22FDE22600D32976 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AB811D822FDE22600D32976 /* LaunchScreen.storyboard */; };
+		1AB811E522FDE22600D32976 /* DiffableTestAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811E422FDE22600D32976 /* DiffableTestAppTests.swift */; };
+		1AB811F322FDE67200D32976 /* Event+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811EF22FDE67200D32976 /* Event+CoreDataClass.swift */; };
+		1AB811F422FDE67200D32976 /* Event+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811F022FDE67200D32976 /* Event+CoreDataProperties.swift */; };
+		1AB811F522FDE67200D32976 /* Section+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811F122FDE67200D32976 /* Section+CoreDataClass.swift */; };
+		1AB811F622FDE67200D32976 /* Section+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811F222FDE67200D32976 /* Section+CoreDataProperties.swift */; };
+		1AB811F822FDE7EF00D32976 /* DiffableFetchController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB811A222FDE09300D32976 /* DiffableFetchController.framework */; };
+		1AB811F922FDE7EF00D32976 /* DiffableFetchController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1AB811A222FDE09300D32976 /* DiffableFetchController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,7 +38,35 @@
 			remoteGlobalIDString = 1AB811A122FDE09300D32976;
 			remoteInfo = DiffableFetchController;
 		};
+		1AB811E122FDE22600D32976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AB8119922FDE09300D32976 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB811C722FDE22400D32976;
+			remoteInfo = DiffableTestApp;
+		};
+		1AB811FA22FDE7EF00D32976 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1AB8119922FDE09300D32976 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AB811A122FDE09300D32976;
+			remoteInfo = DiffableFetchController;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1AB811FC22FDE7EF00D32976 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1AB811F922FDE7EF00D32976 /* DiffableFetchController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1AB811A222FDE09300D32976 /* DiffableFetchController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DiffableFetchController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -29,6 +75,26 @@
 		1AB811AB22FDE09300D32976 /* DiffableFetchControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiffableFetchControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB811B022FDE09300D32976 /* DiffableFetchControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableFetchControllerTests.swift; sourceTree = "<group>"; };
 		1AB811B222FDE09300D32976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiffableFetchController.swift; sourceTree = "<group>"; };
+		1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+ObjectID.swift"; sourceTree = "<group>"; };
+		1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Uniqued.swift"; sourceTree = "<group>"; };
+		1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDidSaveNotification.swift; sourceTree = "<group>"; };
+		1AB811C822FDE22400D32976 /* DiffableTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiffableTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB811CA22FDE22400D32976 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		1AB811CD22FDE22400D32976 /* DiffableTestApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DiffableTestApp.xcdatamodel; sourceTree = "<group>"; };
+		1AB811CF22FDE22400D32976 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
+		1AB811D122FDE22400D32976 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		1AB811D422FDE22400D32976 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		1AB811D622FDE22600D32976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1AB811D922FDE22600D32976 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1AB811DB22FDE22600D32976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AB811E022FDE22600D32976 /* DiffableTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiffableTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AB811E422FDE22600D32976 /* DiffableTestAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableTestAppTests.swift; sourceTree = "<group>"; };
+		1AB811E622FDE22600D32976 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1AB811EF22FDE67200D32976 /* Event+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1AB811F022FDE67200D32976 /* Event+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Event+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		1AB811F122FDE67200D32976 /* Section+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Section+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1AB811F222FDE67200D32976 /* Section+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Section+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +113,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1AB811C522FDE22400D32976 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AB811F822FDE7EF00D32976 /* DiffableFetchController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB811DD22FDE22600D32976 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,7 +136,10 @@
 			children = (
 				1AB811A422FDE09300D32976 /* DiffableFetchController */,
 				1AB811AF22FDE09300D32976 /* DiffableFetchControllerTests */,
+				1AB811C922FDE22400D32976 /* DiffableTestApp */,
+				1AB811E322FDE22600D32976 /* DiffableTestAppTests */,
 				1AB811A322FDE09300D32976 /* Products */,
+				1AB811F722FDE7EF00D32976 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +148,8 @@
 			children = (
 				1AB811A222FDE09300D32976 /* DiffableFetchController.framework */,
 				1AB811AB22FDE09300D32976 /* DiffableFetchControllerTests.xctest */,
+				1AB811C822FDE22400D32976 /* DiffableTestApp.app */,
+				1AB811E022FDE22600D32976 /* DiffableTestAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -72,6 +158,10 @@
 			isa = PBXGroup;
 			children = (
 				1AB811A522FDE09300D32976 /* DiffableFetchController.h */,
+				1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */,
+				1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */,
+				1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */,
+				1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */,
 				1AB811A622FDE09300D32976 /* Info.plist */,
 			);
 			path = DiffableFetchController;
@@ -84,6 +174,41 @@
 				1AB811B222FDE09300D32976 /* Info.plist */,
 			);
 			path = DiffableFetchControllerTests;
+			sourceTree = "<group>";
+		};
+		1AB811C922FDE22400D32976 /* DiffableTestApp */ = {
+			isa = PBXGroup;
+			children = (
+				1AB811CA22FDE22400D32976 /* AppDelegate.swift */,
+				1AB811CF22FDE22400D32976 /* MasterViewController.swift */,
+				1AB811D122FDE22400D32976 /* DetailViewController.swift */,
+				1AB811D322FDE22400D32976 /* Main.storyboard */,
+				1AB811D622FDE22600D32976 /* Assets.xcassets */,
+				1AB811D822FDE22600D32976 /* LaunchScreen.storyboard */,
+				1AB811DB22FDE22600D32976 /* Info.plist */,
+				1AB811CC22FDE22400D32976 /* DiffableTestApp.xcdatamodeld */,
+				1AB811EF22FDE67200D32976 /* Event+CoreDataClass.swift */,
+				1AB811F022FDE67200D32976 /* Event+CoreDataProperties.swift */,
+				1AB811F122FDE67200D32976 /* Section+CoreDataClass.swift */,
+				1AB811F222FDE67200D32976 /* Section+CoreDataProperties.swift */,
+			);
+			path = DiffableTestApp;
+			sourceTree = "<group>";
+		};
+		1AB811E322FDE22600D32976 /* DiffableTestAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				1AB811E422FDE22600D32976 /* DiffableTestAppTests.swift */,
+				1AB811E622FDE22600D32976 /* Info.plist */,
+			);
+			path = DiffableTestAppTests;
+			sourceTree = "<group>";
+		};
+		1AB811F722FDE7EF00D32976 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -136,6 +261,43 @@
 			productReference = 1AB811AB22FDE09300D32976 /* DiffableFetchControllerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		1AB811C722FDE22400D32976 /* DiffableTestApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AB811E722FDE22600D32976 /* Build configuration list for PBXNativeTarget "DiffableTestApp" */;
+			buildPhases = (
+				1AB811C422FDE22400D32976 /* Sources */,
+				1AB811C522FDE22400D32976 /* Frameworks */,
+				1AB811C622FDE22400D32976 /* Resources */,
+				1AB811FC22FDE7EF00D32976 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB811FB22FDE7EF00D32976 /* PBXTargetDependency */,
+			);
+			name = DiffableTestApp;
+			productName = DiffableTestApp;
+			productReference = 1AB811C822FDE22400D32976 /* DiffableTestApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1AB811DF22FDE22600D32976 /* DiffableTestAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1AB811EA22FDE22600D32976 /* Build configuration list for PBXNativeTarget "DiffableTestAppTests" */;
+			buildPhases = (
+				1AB811DC22FDE22600D32976 /* Sources */,
+				1AB811DD22FDE22600D32976 /* Frameworks */,
+				1AB811DE22FDE22600D32976 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1AB811E222FDE22600D32976 /* PBXTargetDependency */,
+			);
+			name = DiffableTestAppTests;
+			productName = DiffableTestAppTests;
+			productReference = 1AB811E022FDE22600D32976 /* DiffableTestAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -148,9 +310,17 @@
 				TargetAttributes = {
 					1AB811A122FDE09300D32976 = {
 						CreatedOnToolsVersion = 11.0;
+						LastSwiftMigration = 1100;
 					};
 					1AB811AA22FDE09300D32976 = {
 						CreatedOnToolsVersion = 11.0;
+					};
+					1AB811C722FDE22400D32976 = {
+						CreatedOnToolsVersion = 11.0;
+					};
+					1AB811DF22FDE22600D32976 = {
+						CreatedOnToolsVersion = 11.0;
+						TestTargetID = 1AB811C722FDE22400D32976;
 					};
 				};
 			};
@@ -169,6 +339,8 @@
 			targets = (
 				1AB811A122FDE09300D32976 /* DiffableFetchController */,
 				1AB811AA22FDE09300D32976 /* DiffableFetchControllerTests */,
+				1AB811C722FDE22400D32976 /* DiffableTestApp */,
+				1AB811DF22FDE22600D32976 /* DiffableTestAppTests */,
 			);
 		};
 /* End PBXProject section */
@@ -188,6 +360,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1AB811C622FDE22400D32976 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AB811DA22FDE22600D32976 /* LaunchScreen.storyboard in Resources */,
+				1AB811D722FDE22600D32976 /* Assets.xcassets in Resources */,
+				1AB811D522FDE22400D32976 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB811DE22FDE22600D32976 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -195,6 +384,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1AB811BD22FDE14400D32976 /* DiffableFetchController.swift in Sources */,
+				1AB811C322FDE18500D32976 /* ContextDidSaveNotification.swift in Sources */,
+				1AB811C222FDE18500D32976 /* Array+Uniqued.swift in Sources */,
+				1AB811C122FDE18500D32976 /* NSExpressionDescription+ObjectID.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +399,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1AB811C422FDE22400D32976 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AB811CE22FDE22400D32976 /* DiffableTestApp.xcdatamodeld in Sources */,
+				1AB811CB22FDE22400D32976 /* AppDelegate.swift in Sources */,
+				1AB811D022FDE22400D32976 /* MasterViewController.swift in Sources */,
+				1AB811F422FDE67200D32976 /* Event+CoreDataProperties.swift in Sources */,
+				1AB811D222FDE22400D32976 /* DetailViewController.swift in Sources */,
+				1AB811F622FDE67200D32976 /* Section+CoreDataProperties.swift in Sources */,
+				1AB811F322FDE67200D32976 /* Event+CoreDataClass.swift in Sources */,
+				1AB811F522FDE67200D32976 /* Section+CoreDataClass.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AB811DC22FDE22600D32976 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1AB811E522FDE22600D32976 /* DiffableTestAppTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -214,7 +430,36 @@
 			target = 1AB811A122FDE09300D32976 /* DiffableFetchController */;
 			targetProxy = 1AB811AD22FDE09300D32976 /* PBXContainerItemProxy */;
 		};
+		1AB811E222FDE22600D32976 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB811C722FDE22400D32976 /* DiffableTestApp */;
+			targetProxy = 1AB811E122FDE22600D32976 /* PBXContainerItemProxy */;
+		};
+		1AB811FB22FDE7EF00D32976 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1AB811A122FDE09300D32976 /* DiffableFetchController */;
+			targetProxy = 1AB811FA22FDE7EF00D32976 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		1AB811D322FDE22400D32976 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AB811D422FDE22400D32976 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		1AB811D822FDE22600D32976 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1AB811D922FDE22600D32976 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1AB811B422FDE09300D32976 /* Debug */ = {
@@ -340,6 +585,7 @@
 		1AB811B722FDE09300D32976 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
@@ -356,6 +602,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = net.tech4tomorrow.iOS.DiffableFetchController;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -364,6 +611,7 @@
 		1AB811B822FDE09300D32976 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
@@ -388,6 +636,7 @@
 		1AB811BA22FDE09300D32976 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
 				INFOPLIST_FILE = DiffableFetchControllerTests/Info.plist;
@@ -406,6 +655,7 @@
 		1AB811BB22FDE09300D32976 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
 				INFOPLIST_FILE = DiffableFetchControllerTests/Info.plist;
@@ -418,6 +668,84 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1AB811E822FDE22600D32976 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UR8UBU97V2;
+				INFOPLIST_FILE = DiffableTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tech4tomorrow.iOS.DiffableTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1AB811E922FDE22600D32976 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UR8UBU97V2;
+				INFOPLIST_FILE = DiffableTestApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tech4tomorrow.iOS.DiffableTestApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1AB811EB22FDE22600D32976 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UR8UBU97V2;
+				INFOPLIST_FILE = DiffableTestAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tech4tomorrow.iOS.DiffableTestAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiffableTestApp.app/DiffableTestApp";
+			};
+			name = Debug;
+		};
+		1AB811EC22FDE22600D32976 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UR8UBU97V2;
+				INFOPLIST_FILE = DiffableTestAppTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.tech4tomorrow.iOS.DiffableTestAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DiffableTestApp.app/DiffableTestApp";
 			};
 			name = Release;
 		};
@@ -451,7 +779,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		1AB811E722FDE22600D32976 /* Build configuration list for PBXNativeTarget "DiffableTestApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AB811E822FDE22600D32976 /* Debug */,
+				1AB811E922FDE22600D32976 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1AB811EA22FDE22600D32976 /* Build configuration list for PBXNativeTarget "DiffableTestAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1AB811EB22FDE22600D32976 /* Debug */,
+				1AB811EC22FDE22600D32976 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1AB811CC22FDE22400D32976 /* DiffableTestApp.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1AB811CD22FDE22400D32976 /* DiffableTestApp.xcdatamodel */,
+			);
+			currentVersion = 1AB811CD22FDE22400D32976 /* DiffableTestApp.xcdatamodel */;
+			path = DiffableTestApp.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1AB8119922FDE09300D32976 /* Project object */;
 }

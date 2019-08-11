@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14886.2" systemVersion="18G87" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Event" representedClassName="Event">
+        <attribute name="sectionName" attributeType="String"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <attribute name="uniqueIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="event" inverseEntity="Section"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uniqueIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+        <userInfo/>
+    </entity>
+    <entity name="Section" representedClassName="Section" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="uniqueIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Event" inverseName="section" inverseEntity="Event"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="uniqueIdentifier"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <elements>
+        <element name="Event" positionX="261" positionY="189" width="128" height="103"/>
+        <element name="Section" positionX="261" positionY="216" width="128" height="88"/>
+    </elements>
+</model>
