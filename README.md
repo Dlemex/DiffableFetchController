@@ -16,11 +16,14 @@ The callback to configure the fetchRequest, configureFetch, is where you set sor
 Set the viewContext on the fetchController, which is the main thread context, if you want automatic montiroing of contextDidSave processing.  If unset, you must pass contextDidChange notifications to the fetch controller.
 
 *********  Setup:
+
 private var _diffableDataSource: UITableViewDiffableDataSource<String, UUID>?
+
 var diffableDataSource: UITableViewDiffableDataSource<String, UUID>? { 
         get { return masterSyncQueue.sync { return _diffableDataSource } }
         set { masterSyncQueue.sync { _diffableDataSource = newValue } }
 }
+
 let masterSyncQueue = DispatchQueue.init(label: "net.tech4tomorrow.DiffableTestAppMaster")
     
 /// Processing queue for DiffableFetchController
@@ -49,10 +52,12 @@ var diffableFetchController: DiffableFetchController<Event,String,UUID> {
         controller.delegate = self
         _diffableFetchController = controller
         return controller
-    }    
+    } 
+        
 private var _diffableFetchController: DiffableFetchController<Event,String,UUID>? = nil
 
 ******** in viewWillAppear:
+
         diffableDataSource = UITableViewDiffableDataSource<String, UUID>(tableView: tableView) {
             [unowned self] (tableView, indexPath, identifier) -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
@@ -70,6 +75,7 @@ private var _diffableFetchController: DiffableFetchController<Event,String,UUID>
             }
             return
         }
+        
         let fetchController = diffableFetchController
         processingQueue.async {
             let snapshot = try! fetchController.performFetch()
@@ -77,7 +83,9 @@ private var _diffableFetchController: DiffableFetchController<Event,String,UUID>
         }
 
 *********** delegate extension
+
 extension MasterViewController: DiffableFetchControllerDelegate {
+
     func didChangeContent<Root, SectionIdentifierType, ItemIdentifierType>(updates: Set<ItemIdentifierType>, inserts: Set<ItemIdentifierType>, snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>?, controller: DiffableFetchController<Root, SectionIdentifierType, ItemIdentifierType>) where Root : NSManagedObject, SectionIdentifierType : Hashable, ItemIdentifierType : Hashable {
         print("got updates: \(updates) inserts: \(inserts)")
         guard let snapshot = snapshot as? NSDiffableDataSourceSnapshot<String,UUID>, let inserts = inserts as? Set<UUID> else { return }
@@ -94,7 +102,9 @@ extension MasterViewController: DiffableFetchControllerDelegate {
 }
 
 *************  If you have search results, here is an example...
+
 extension MasterViewController: UISearchResultsUpdating {
+
     /// When a user enters a search term, filter the table view
     func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text else { return }
