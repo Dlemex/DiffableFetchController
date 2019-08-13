@@ -1,6 +1,5 @@
 //
-//  ObjectsDidChangeNotification.swift
-//  RentalManager
+//  ContextNotification.swift
 //
 //  Created by Daniel Eggert on 24/05/2015.
 //  Copyright (c) 2015 objc.io. All rights reserved.
@@ -12,10 +11,12 @@ import Foundation
 import CoreData
 
 
-struct ContextDidSaveNotification {
+/// Create a useful structure for NSManagedObjectContext notifications
+/// - Note: NSManagedObjectContextWillSave does not include any userInfo
+struct ContextNotification {
 
     init(note: Notification) {
-        assert(note.name == NSNotification.Name.NSManagedObjectContextDidSave)
+        assert(note.name == NSNotification.Name.NSManagedObjectContextDidSave || note.name == NSNotification.Name.NSManagedObjectContextObjectsDidChange)
         notification = note
     }
 

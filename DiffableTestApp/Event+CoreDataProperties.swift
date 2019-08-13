@@ -19,6 +19,7 @@ extension Event {
 
     @NSManaged public var timestamp: Date?
     @NSManaged public var uniqueIdentifier: UUID!
+    @NSManaged public var uninteresting: Bool
     @NSManaged public var sectionName: String!
     @NSManaged public var section: Section?
 

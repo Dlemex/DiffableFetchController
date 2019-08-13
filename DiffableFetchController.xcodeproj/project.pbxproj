@@ -13,7 +13,7 @@
 		1AB811BD22FDE14400D32976 /* DiffableFetchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */; };
 		1AB811C122FDE18500D32976 /* NSExpressionDescription+ObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */; };
 		1AB811C222FDE18500D32976 /* Array+Uniqued.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */; };
-		1AB811C322FDE18500D32976 /* ContextDidSaveNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */; };
+		1AB811C322FDE18500D32976 /* ContextNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811C022FDE18500D32976 /* ContextNotification.swift */; };
 		1AB811CB22FDE22400D32976 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CA22FDE22400D32976 /* AppDelegate.swift */; };
 		1AB811CE22FDE22400D32976 /* DiffableTestApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CC22FDE22400D32976 /* DiffableTestApp.xcdatamodeld */; };
 		1AB811D022FDE22400D32976 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AB811CF22FDE22400D32976 /* MasterViewController.swift */; };
@@ -78,7 +78,7 @@
 		1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiffableFetchController.swift; sourceTree = "<group>"; };
 		1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSExpressionDescription+ObjectID.swift"; sourceTree = "<group>"; };
 		1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Uniqued.swift"; sourceTree = "<group>"; };
-		1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextDidSaveNotification.swift; sourceTree = "<group>"; };
+		1AB811C022FDE18500D32976 /* ContextNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextNotification.swift; sourceTree = "<group>"; };
 		1AB811C822FDE22400D32976 /* DiffableTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiffableTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AB811CA22FDE22400D32976 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AB811CD22FDE22400D32976 /* DiffableTestApp.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DiffableTestApp.xcdatamodel; sourceTree = "<group>"; };
@@ -161,7 +161,7 @@
 				1AB811BC22FDE14400D32976 /* DiffableFetchController.swift */,
 				1AB811BF22FDE18500D32976 /* Array+Uniqued.swift */,
 				1AB811BE22FDE18400D32976 /* NSExpressionDescription+ObjectID.swift */,
-				1AB811C022FDE18500D32976 /* ContextDidSaveNotification.swift */,
+				1AB811C022FDE18500D32976 /* ContextNotification.swift */,
 				1AB811A622FDE09300D32976 /* Info.plist */,
 			);
 			path = DiffableFetchController;
@@ -385,7 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AB811BD22FDE14400D32976 /* DiffableFetchController.swift in Sources */,
-				1AB811C322FDE18500D32976 /* ContextDidSaveNotification.swift in Sources */,
+				1AB811C322FDE18500D32976 /* ContextNotification.swift in Sources */,
 				1AB811C222FDE18500D32976 /* Array+Uniqued.swift in Sources */,
 				1AB811C122FDE18500D32976 /* NSExpressionDescription+ObjectID.swift in Sources */,
 			);
@@ -587,6 +587,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 100;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -613,6 +614,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 100;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = UR8UBU97V2;
 				DYLIB_COMPATIBILITY_VERSION = 1;

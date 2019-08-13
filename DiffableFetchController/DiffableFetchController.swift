@@ -38,10 +38,14 @@ public protocol DiffableFetchControllerDelegate: NSObjectProtocol {
 public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierType> : NSObject where
                                 Root: NSManagedObject, SectionIdentifierType: Hashable, ItemIdentifierType: Hashable {
     typealias SnapshotType = NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType>
-    let useSectionFetching = false
+    private let useSectionFetching = false
     
     // MARK: Public variables and initializer
-    
+    /// Controller specific errors throwm
+    public enum DiffableFetchControllerError: Error {
+        /// Wthout sort keys, the fetch will return inconsistent results
+        case fetchWithoutSortKeys
+    }
     public struct ControllerStats {
         public var viewLookups: Int = 0
         public var viewMaterialize: Int = 0
@@ -75,7 +79,7 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         set { controllerSyncQueue.sync { _viewContext = newValue } }
     }
     
-    private(set) public var controllerStats: ControllerStats {
+    private(set) public var controllerStats: ControllerStats? {
         get { return controllerSyncQueue.sync { return _controllerStats } }
         set { controllerSyncQueue.sync { _controllerStats = newValue } }
     }
@@ -90,14 +94,18 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         super.init()
     }
     private let fetchRequest: NSFetchRequest<NSFetchRequestResult>
-    
+    private let controllerSyncQueue: DispatchQueue
+
     private var _latestSnapshot: SnapshotType?
+    private var _sortChangeIdentifiers: Set<ItemIdentifierType>?
     private var _objectIDs: [ItemIdentifierType:NSManagedObjectID]?
     private var _nearbyItemsSize: Int?
     private weak var _delegate: DiffableFetchControllerDelegate?
     private var _configureFetch: ((NSFetchRequest<NSFetchRequestResult>)->())?
-    private var _controllerStats: ControllerStats = ControllerStats()
+    private var _controllerStats: ControllerStats?
     private var _sortKeys: Set<String>?
+    private var _subscriberDidSave: AnyCancellable?
+    private var _subscriberDidChange: AnyCancellable?
     private var _viewContext: NSManagedObjectContext? {
         didSet {
             guard let viewContext = _viewContext else { return }
@@ -115,33 +123,39 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
     }
     private var sectionKeyPath: String { return NSExpression(forKeyPath: sectionKey).keyPath }
     private var itemKeyPath: String { return NSExpression(forKeyPath: itemKey).keyPath }
-    private let controllerSyncQueue: DispatchQueue
     private var objectIDs: [ItemIdentifierType:NSManagedObjectID]? {
         get { return controllerSyncQueue.sync { return _objectIDs } }
         set { controllerSyncQueue.sync { _objectIDs = newValue } }
     }
+    private var sortChangeIdentifiers: Set<ItemIdentifierType>? {
+        get { return controllerSyncQueue.sync { return _sortChangeIdentifiers } }
+        set { controllerSyncQueue.sync { _sortChangeIdentifiers = newValue } }
+    }
     /// Retain the materialized nearby view objects (never read from)
     private var lastNearbyViewObjects: [Root]?
     
-    private var _contextChangedPublisher: NotificationCenter.Publisher?
-    private var _subscriber: AnyCancellable?
     /// Subscribe to contextDidSave notifications and process those notifications
     ///
     /// - Warning: This must invoked inside the sync queue protection and is actually only called during didSet of a protected variable
     /// - Parameter viewContext: the mainthread context
     private func protectedSubscribeToContext(_ viewContext:NSManagedObjectContext) {
-        let publisher = NotificationCenter.Publisher(center: .default, name: .NSManagedObjectContextDidSave, object: viewContext)
-        _contextChangedPublisher = publisher
-        _subscriber = publisher.subscribe(on: processingQueue)
+        let publisherDidSave = NotificationCenter.Publisher(center: .default, name: .NSManagedObjectContextDidSave, object: viewContext)
+        _subscriberDidSave = publisherDidSave.subscribe(on: processingQueue)
             .sink(receiveValue: { [weak controller = self] (notification) in
             guard let controller = controller else { return }
             guard let updateInfo = try! controller.fetchControllerChanges(didSave: notification) else { return }
             print("updates; \(updateInfo.0)")
             controller.contextChanged(updates: updateInfo.0, inserts: updateInfo.1, snapshot: updateInfo.2)
         })
+        let publisherDidChange = NotificationCenter.Publisher(center: .default, name: .NSManagedObjectContextObjectsDidChange, object: viewContext)
+        _subscriberDidChange = publisherDidChange.subscribe(on: processingQueue)
+            .sink(receiveValue: { [weak controller = self] (notification) in
+                guard let controller = controller else { return }
+                controller.fetchControllerChange(didChange: notification)
+            })
     }
     
-    private func configureFetchRequest() {
+    private func configureFetchRequest() throws {
         sortKeys = extractSortKeys(fetchRequest.sortDescriptors)
         if let configureFetch = configureFetch {
             configureFetch(fetchRequest)
@@ -149,6 +163,7 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
                 self.sortKeys = sortKeys
             }
         }
+        guard let sortKeys = sortKeys, !sortKeys.isEmpty else { throw DiffableFetchControllerError.fetchWithoutSortKeys }
         fetchRequest.resultType = .dictionaryResultType
         fetchRequest.propertiesToFetch = [NSExpressionDescription.objectID, sectionKeyPath, itemKeyPath]
     }
@@ -156,19 +171,22 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
     /// Return a list of `<Root>`  property names that are identified by the sort descriptors, ignoring any keyPaths
     /// - Parameter descriptors: optional array of sort descriptors
     private func extractSortKeys(_ descriptors:[NSSortDescriptor]?) -> Set<String>? {
-        guard let sortDescriptors = fetchRequest.sortDescriptors else { return nil }
-        return Set(sortDescriptors.compactMap( { (descriptor) in
-            guard let key = descriptor.key, !key.contains(".") else { return nil }
-            return key
-        }))
+        guard let descriptors = descriptors else { return nil }
+        return Set(descriptors.compactMap( { return $0.key }))
     }
     
     private func createSnapshot(limitTo sections:Set<SectionIdentifierType>) throws -> SnapshotType? {
-        guard !sections.isEmpty, let latestSnapshot = latestSnapshot else { return try performFetch() }
-        let knownSections = Set(latestSnapshot.sectionIdentifiers)
+        guard !sections.isEmpty, let oldSnapshot = latestSnapshot else { return try performFetch() }
+        let knownSections = Set(oldSnapshot.sectionIdentifiers)
         guard sections.isSubset(of: knownSections) else { return try performFetch() }
-        let itemsToRemove = sections.flatMap { latestSnapshot.itemIdentifiers(inSection: $0 ) }
-        guard itemsToRemove.count * 3 < latestSnapshot.numberOfItems else { return try performFetch() }
+        let itemsToRemoveCount = sections.reduce(0, { $0 + oldSnapshot.numberOfItems(inSection: $1) })
+        guard itemsToRemoveCount * 2 < oldSnapshot.numberOfItems else { return try performFetch() }
+        let latestSnapshot = SnapshotType()
+        latestSnapshot.appendSections(oldSnapshot.sectionIdentifiers)
+        let unchangedSections = knownSections.subtracting(sections)
+        unchangedSections.forEach { (aSection) in
+            latestSnapshot.appendItems(oldSnapshot.itemIdentifiers(inSection: aSection), toSection: aSection)
+        }
         let priorPredicate = fetchRequest.predicate
         defer { fetchRequest.predicate = priorPredicate }
         let sectionPredicate = NSPredicate(format: "%K in %@", sectionKeyPath, sections)
@@ -189,8 +207,8 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         if let fetchError = fetchError {
             throw fetchError
         }
-        latestSnapshot.deleteItems(itemsToRemove)
         updateSnapshot(latestSnapshot, descriptors: descriptors)
+        self.latestSnapshot = latestSnapshot
         return latestSnapshot
     }
     
@@ -207,19 +225,21 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         self.objectIDs = objectIDs
     }
     
-    /// When a `<Root>` object is reported as updated in a contextDidChange notification, this method checks if any sortKey property has been
-    /// changed or if the section of this object has changed.
+    /// Return which sections should be reloaded for an updated object
+    ///
+    /// If the section of the object changes, then both sections are reported.  If sortChange is present, it is used to determine if the section should be
+    /// reloaded.  If sortChange is nil, we report the section needs reloading for safety.
     ///
     /// - Parameter object: object from the contextDidSave notification
-    private func needsSnapshot(for object:Root) -> [SectionIdentifierType] {
+    /// - Parameter sortChange: when set we use the flag to indicate if section sort is valid, if not present, assume section changed
+    private func needsSnapshot(for object:Root, sortChange: Bool?) -> [SectionIdentifierType] {
         let section = object[keyPath: sectionKey]
         guard let currentSnapshot = latestSnapshot else { return [section] }
         guard let oldSection = currentSnapshot.sectionIdentifier(containingItem: object[keyPath: itemKey]) else { return [section] }
-        if let sortKeys = sortKeys {
-            let changedKeys = Set(object.changedValuesForCurrentEvent().keys)
-            if !changedKeys.intersection(sortKeys).isEmpty { return [oldSection,section] }
+        guard section != oldSection else {
+            guard let sortChange = sortChange, !sortChange else { return [section] }
+            return []
         }
-        guard section != oldSection else { return [] }
         return [oldSection,section]
     }
     
@@ -237,12 +257,24 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         controllerStats = ControllerStats()
     }
     
+    /// Return the most recent snapshot generated by controller.
     public func currentSnapshot() -> NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType>? {
         return latestSnapshot
     }
     
-    internal func performFetch2() throws -> NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType> {
-        configureFetchRequest()
+    /// Perform a fetch of the objects and construct a snapshot that can be provided to the diffable datasource.
+    ///
+    /// Any changes to sort order or filtering should be implmented by invoking this method and then making the changes during the `configFetch `
+    /// callback.  The controller's managed object context is used for the fetch and a background context is recommended.
+    ///
+    /// - Note: If the DiffableFetchController is using a processingQueue, this method should be performed on that processing queue.  This snapshot
+    ///         is passed to the diffableDataSource.apply() function and may be performed on a background queue but then should always be performed
+    ///         from the background (Apple advises against mixing background and main thread apply()).
+    ///
+    /// - Throws: Any fetch errors, or DiffableFetchControllerError
+    /// - Returns: Snapshot that should be passed to the diffableDataSource.apply()
+    public func performFetch() throws -> NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType> {
+        try configureFetchRequest()
         var descriptors: [NSDictionary] = []
         var fetchError: Error?
         managedObjectContext.performAndWait {
@@ -256,18 +288,19 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
             throw fetchError
         }
         let snapshot = SnapshotType()
-        let sectionNames = descriptors.compactMap { (dictionary) in
+        let sectionIdentifiers = descriptors.compactMap { (dictionary) in
             return (dictionary as! [String:Any])[sectionKeyPath] as? SectionIdentifierType
         }
-        let sectionIDs = NSOrderedSet(array: sectionNames).array as! [SectionIdentifierType]
+        // Performance tests show that uniquing with NSOrderedSet is slightly faster than uniqueing in pure swift
+        let sectionIDs = NSOrderedSet(array: sectionIdentifiers).array as! [SectionIdentifierType]
         snapshot.appendSections(sectionIDs)
         updateSnapshot(snapshot, descriptors: descriptors)
         latestSnapshot = snapshot
         return snapshot
     }
     
-    public func performFetch() throws -> NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType> {
-        configureFetchRequest()
+    internal func performFetch2() throws -> NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType> {
+        try configureFetchRequest()
         var descriptors: [NSDictionary] = []
         var fetchError: Error?
         managedObjectContext.performAndWait {
@@ -358,38 +391,82 @@ public class DiffableFetchController<Root,SectionIdentifierType,ItemIdentifierTy
         return Array(itemIdentifiers.dropLast(dropCount).suffix(nearbyItemsSize))
     }
     
+    /// Process `NSManagedObjectContextObjectsDidChange` notificatiobs
+    ///
+    /// These notifications are used to detect changes to sort fields of objects managed by the controller.  Changes are accumulated until
+    /// the `NSManagedObjectContextDidSave` notification.
+    ///
+    /// When the `viewContext` is set for the controller, this ntoification will be monitored and handled.
+    ///
+    /// - Note: If the controller is not recieving objectsDidChange notifications, the DidSave notification will cause a reload of any updfated
+    ///         sections as it will not know if the sort ordef of the section has changed.
+    /// - Parameter notification: objectsDidChange notification
+    public func fetchControllerChange(didChange notification:Notification) {
+        precondition(notification.name == .NSManagedObjectContextObjectsDidChange, "Only context objects did change")
+        guard let sortKeys = sortKeys, !sortKeys.isEmpty else { return }
+        let didChange = ContextNotification(note: notification)
+        var sortChange: Set<ItemIdentifierType> = sortChangeIdentifiers ?? []
+        didChange.managedObjectContext.performAndWait {
+            let updateKeys: Set<ItemIdentifierType> = Set(didChange.updatedObjects.compactMap({ (object) in
+                guard let object = object as? Root else { return nil }
+                let changedKeys = Set(object.changedValues().keys)
+                guard !sortKeys.intersection(changedKeys).isEmpty else { return nil }
+                return object[keyPath: itemKey]
+            }))
+            sortChange = updateKeys
+        }
+        sortChangeIdentifiers = sortChange
+    }
+    
+    /// Process `NSManagedObjectContextDIdSave` notifications and report the changes and possibly a new snapshot
+    ///
+    /// These notifications must be processed by the controller for proper operation.  They can be passed in, or will be handled automatically
+    /// with the `viewContext` is set for the controller.  Internally handled notificaations are reported to the delegate.
+    ///
+    /// ItemIdentifiers will be reported for updated objects for processing by the client.  The snapshot, if reported, should be applied by the client.  It
+    /// is only provided if there have been objects inserted or deleted or if a sort order change is detected.
+    ///
+    /// - Warning: The controller interally reloads any sections with updates if it has not recived any ObjectDidChange notifications.  This can cause
+    ///            extra unnecessary fetches by the controller.
+    /// - Parameter notification: sisSave notification
     public func fetchControllerChanges(didSave notification:Notification) throws -> (updates: Set<ItemIdentifierType>, inserts: Set<ItemIdentifierType>, snapshot: NSDiffableDataSourceSnapshot<SectionIdentifierType,ItemIdentifierType>?)? {
         precondition(notification.name == .NSManagedObjectContextDidSave, "Only did save notifications are valid")
-        let didChange = ContextDidSaveNotification(note: notification)
-        guard !didChange.invalidatedAllObjects else { return nil }
+        let didSave = ContextNotification(note: notification)
+        guard !didSave.invalidatedAllObjects else { return nil }
         var updates: Set<ItemIdentifierType> = []
         var inserts: Set<ItemIdentifierType> = []
         var snapshotSections: Set<SectionIdentifierType> = []
         var mustSnapshot = false
-        let context = didChange.managedObjectContext
+        let context = didSave.managedObjectContext
         context.performAndWait {
-            let invalidatedObjects = didChange.invalidatedObjects.compactMap { $0 as? Root }
+            let invalidatedObjects = didSave.invalidatedObjects.compactMap { $0 as? Root }
             if !invalidatedObjects.isEmpty { mustSnapshot = true }
             var modifiedSections: Set<SectionIdentifierType> = []
-             let insertKeys: Set<ItemIdentifierType> = Set(didChange.insertedObjects.compactMap( { (object) in
+             let insertKeys: Set<ItemIdentifierType> = Set(didSave.insertedObjects.compactMap( { (object) in
                 guard let object = object as? Root else { return nil }
                 let section = object[keyPath: sectionKey]
                 modifiedSections.insert(section)
                 return object[keyPath: itemKey]
                 }))
-            let deleteKeys: Set<ItemIdentifierType> = Set(didChange.deletedObjects.compactMap( { (object) in
+            let deleteKeys: Set<ItemIdentifierType> = Set(didSave.deletedObjects.compactMap( { (object) in
                 guard let object = object as? Root else { return nil }
                 let section = object[keyPath: sectionKey]
                 modifiedSections.insert(section)
                 return object[keyPath: itemKey]
             }))
+            if !deleteKeys.isEmpty, var objectIDs = self.objectIDs {
+                deleteKeys.forEach { objectIDs[$0] = nil }
+                self.objectIDs = objectIDs
+            }
             let ignoreKeySet = insertKeys.union(deleteKeys)
-            let updated = didChange.updatedObjects.union(didChange.refreshedObjects)
+            let sortChangedIdentifiers = self.sortChangeIdentifiers
+            self.sortChangeIdentifiers = nil
+            let updated = didSave.updatedObjects.union(didSave.refreshedObjects)
             let updateKeys: Set<ItemIdentifierType> = Set(updated.compactMap( { (object) in
                 guard let object = object as? Root else { return nil }
                 let key = object[keyPath: itemKey]
                 guard !ignoreKeySet.contains(key) else { return nil }
-                modifiedSections.formUnion(needsSnapshot(for: object))
+                modifiedSections.formUnion(needsSnapshot(for: object, sortChange: sortChangedIdentifiers?.contains(key)))
                 return key
             }))
             updates = updateKeys

@@ -3,6 +3,7 @@
     <entity name="Event" representedClassName="Event">
         <attribute name="sectionName" attributeType="String"/>
         <attribute name="timestamp" optional="YES" attributeType="Date"/>
+        <attribute name="uninteresting" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="uniqueIdentifier" attributeType="UUID" usesScalarValueType="NO"/>
         <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="event" inverseEntity="Section"/>
         <uniquenessConstraints>
@@ -23,7 +24,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Event" positionX="261" positionY="189" width="128" height="103"/>
+        <element name="Event" positionX="261" positionY="189" width="128" height="118"/>
         <element name="Section" positionX="261" positionY="216" width="128" height="88"/>
     </elements>
 </model>
